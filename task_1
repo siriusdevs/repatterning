@@ -1,0 +1,46 @@
+from abc import ABC
+from datetime import datetime
+
+class Product():
+
+    name: str
+    due_date: datetime
+
+    def __init__(self, name:str, due_date: datetime):
+        self.name = name
+        self.due_date = due_date
+
+
+class Sklad():
+    def __init__(self):
+        self.__products = []
+
+    def add(self, product: Product) -> None:
+        self.__products.append(product)
+        print(f'продукт {product.name} добавлен на склад')
+
+    def remove(self, product: Product) -> None:
+        if product in self.__products:
+            self.__products.remove(product)
+            print(f'продукт {product.name} удалён со склада')
+        else:
+            print(f'продукт {product.name} отсутствует на складе')
+
+    def clean(self) -> None:
+        for product in self.__products:
+            if product.due_date < datetime.now():
+                self.__products.remove(product)
+                print(f'продукт {product.name} удалён со склада')
+
+
+
+apple = Product('apple', datetime(2023, 5, 29))
+tort = Product('tort', datetime(2023, 6, 12))
+cheese = Product('cheese', datetime(2023, 5, 28))
+
+sklad = Sklad()
+
+sklad.add(apple)
+sklad.add(tort)
+sklad.add(cheese)
+sklad.remove(apple)
