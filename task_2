@@ -1,0 +1,70 @@
+# Написать следующую структуру классов: 
+
+# Есть класс Person, описывающий человека. У человека есть свойства: 
+# 	name: str - имя 
+# 	id: int – id 
+
+# Есть класс Room, который описывает помещение. Оно имеет свойство: 
+# 	name: str - название помещения. 
+# 	Также у любого помещения есть скрытое свойство: 
+# 	users: list[int], которое хранит список id всех людей, у которых есть допуск к этому помещению.  
+# 	Редактируется этот список только с помощью внешних методов 
+# 	add(person: Person) -> None и remove(person: Person) -> None, 
+#     которые добавляют и удаляют людей в пользователи комнаты соответственно. 
+
+# Использовать паттерн Заместитель (Proxy) и написать класс RoomAccess 
+# со статическим 	методом get(person: Person, room: Room) -> None, 
+# который выводит сообщение формата 
+# “пользователю {name} [не] предоставлен доступ в комнату {room name}”. 
+
+from abc import ABC
+
+class Person():
+
+    name: str
+    id: int
+
+    def __init__(self, name, id):
+        self.name = name
+        self.id = id
+
+
+class Room():
+
+    def __init__(self, name:str):
+        self.name = name
+        self._users = []
+
+    def add(self, person: Person) -> None:
+        self._users.append(person.id)
+        print(f'пользователь {person.name} добавлен в комнату {self.name}')
+
+
+    def remove(self, person: Person) -> None:
+        if person.id in self._users:
+            self._users.remove(person.id)
+            print(f'пользователь {person.name} удалён из комнаты {self.name}')
+        else:
+            print(f'пользователя {person.name} нет в списках в комнату {self.name}')
+
+class RoomAccess():
+
+    @staticmethod
+    def get(person: Person, room: Room) -> None:
+        if person.id in room._users:
+            print(f'пользователю {person.name} предоставлен доступ в комнату {room.name}')
+        else:
+            print(f'пользователю {person.name} НЕ предоставлен доступ в комнату {room.name}')
+
+ivan = Person('ivan', 1)
+andrey = Person('andrey', 2)
+
+cabinet = Room('cabinet')
+
+cabinet.add(ivan)
+cabinet.add(andrey)
+cabinet.remove(ivan)
+cabinet.remove(ivan)
+
+RoomAccess.get(andrey, cabinet)
+RoomAccess.get(ivan, cabinet)
