@@ -1,3 +1,13 @@
+# Написать следующую структуру классов: 
+# Есть класс продукт, каждый продукт имеет свойства: 
+# name: str - имя, 
+# due_date : datetime (можно и другой формат) - срок годности.  
+
+# Используя паттерн компоновщик (Composite), написать класс Склад,
+#  который имеет 	внутри скрытую коллекцию продуктов, умеет добавлять и удалять продукты внешними методами 
+#  add(product: Product) -> None и remove(product: Product) -> None, 
+#  а также 	имеет метод clean() -> None, который удаляет все просроченные продукты со склада. 
+
 from abc import ABC
 from datetime import datetime
 
@@ -44,3 +54,5 @@ sklad.add(apple)
 sklad.add(tort)
 sklad.add(cheese)
 sklad.remove(apple)
+
+sklad.clean()
